@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path // empty' 2>/dev/null); if [[ -n \"$FILE\" && \"$FILE\" == *.py ]]; then echo \"--- syntax check: $FILE ---\"; python3 -m py_compile \"$FILE\" 2>&1 && echo \"OK\" || echo \"SYNTAX ERROR ABOVE — fix before continuing\"; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": [
+      "Write(./docs/experiment_log.md)"
+    ]
+  }
+}
